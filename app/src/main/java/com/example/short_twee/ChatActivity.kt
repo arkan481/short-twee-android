@@ -10,6 +10,8 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.short_twee.adapters.ChatAdapters
+import com.example.short_twee.models.Story
+import com.example.short_twee.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -40,7 +42,26 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun setupChatAdapter() {
-        chatAdapters = ChatAdapters()
+        val stories = ArrayList<Story>()
+        stories.add(
+            Story(
+                id = "debug",
+                title = "Ini Title",
+                content = "Ini Content",
+                createdAt = "Sun Jul 04 2021 19:11:08 GMT+0700 (Western Indonesia Time)",
+                user = User(id = FirebaseAuth.getInstance().currentUser!!.uid, name = FirebaseAuth.getInstance().currentUser!!.email!!)
+            )
+        )
+        stories.add(
+            Story(
+                id = "debug2",
+                title = "Ini Title",
+                content = "Ini Content",
+                createdAt = "Sun Jul 04 2021 19:11:08 GMT+0700 (Western Indonesia Time)",
+                user = User(id = "FirebaseAuth.getInstance().currentUser!!.uid", name = "iniendekocak")
+            )
+        )
+        chatAdapters = ChatAdapters(stories)
         rvChat.adapter = chatAdapters
     }
 

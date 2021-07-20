@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lr_chat_send"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
@@ -15,6 +16,7 @@
         app:cardCornerRadius="25dp">
 
         <TextView
+            android:id="@+id/tv_chat_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,6 +41,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_chat_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -55,6 +58,7 @@
                 android:background="#33000000" />
 
             <TextView
+                android:id="@+id/tv_chat_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -65,22 +69,23 @@
                 android:textSize="18sp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/ib_chat_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_baseline_delete_24" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_chat_date"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:fontFamily="@font/poppins_regular"
                     android:text="Jul 04 19:11:08"
                     android:textColor="#4D000000"
