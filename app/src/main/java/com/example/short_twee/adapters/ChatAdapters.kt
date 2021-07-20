@@ -1,10 +1,13 @@
 package com.example.short_twee.adapters
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.short_twee.ChatActivity
 import com.example.short_twee.R
+import com.example.short_twee.UpdateDialog
 
 class ChatAdapters : RecyclerView.Adapter<ChatAdapters.ViewHolder>() {
 
@@ -23,6 +26,11 @@ class ChatAdapters : RecyclerView.Adapter<ChatAdapters.ViewHolder>() {
     }
 
     inner class ViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        init {
+            itemView.setOnLongClickListener { view ->
+                UpdateDialog().show((itemView.context as ChatActivity).supportFragmentManager, "Update Story")
+                true
+            }
+        }
     }
 }
