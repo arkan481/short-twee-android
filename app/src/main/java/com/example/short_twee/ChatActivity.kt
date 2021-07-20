@@ -4,10 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.short_twee.adapters.ChatAdapters
@@ -15,6 +12,9 @@ import com.example.short_twee.models.Story
 import com.example.short_twee.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,6 +32,11 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var etContent: EditText
     private lateinit var cvProcess: CardView
 
+    private lateinit var database: FirebaseDatabase
+    private lateinit var storyRef: DatabaseReference
+
+    private val stories = ArrayList<Story>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -46,40 +51,39 @@ class ChatActivity : AppCompatActivity() {
 
         setupHeader()
 
+        setupChatAdapter()
+
+        listenToDb()
+
         bindEvents()
 
-        setupChatAdapter()
     }
 
     private fun setupChatAdapter() {
-        val stories = ArrayList<Story>()
-        // TODO: Fetch From Firebase
-        stories.add(
-            Story(
-                id = "debug",
-                title = "Ini Title",
-                content = "Ini Content",
-                createdAt = "Sun Jul 04 2021 19:11:08 GMT+0700 (Western Indonesia Time)",
-                user = User(
-                    id = FirebaseAuth.getInstance().currentUser!!.uid,
-                    name = FirebaseAuth.getInstance().currentUser!!.email!!
-                )
-            )
-        )
-        stories.add(
-            Story(
-                id = "debug2",
-                title = "Ini Title",
-                content = "Ini Content",
-                createdAt = "Sun Jul 04 2021 19:11:08 GMT+0700 (Western Indonesia Time)",
-                user = User(
-                    id = "FirebaseAuth.getInstance().currentUser!!.uid",
-                    name = "iniendekocak"
-                )
-            )
-        )
         chatAdapters = ChatAdapters(stories)
         rvChat.adapter = chatAdapters
+    }
+
+    private fun listenToDb() {
+        database = Firebase.database("https://short-twee-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        storyRef = database.getReference("stories")
+
+        val storiesListener = object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                stories.clear()
+                p0.children.forEach { dataSnapshot ->
+                    val story = dataSnapshot.getValue<Story>()
+                    stories.add(story!!)
+                }
+                chatAdapters.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Toast.makeText(this@ChatActivity, "error fetching data", Toast.LENGTH_SHORT).show()
+                Log.w("TAG", "loadPost:onCancelled", p0.toException())
+            }
+        }
+        storyRef.addValueEventListener(storiesListener)
     }
 
     private fun bindEvents() {
@@ -100,14 +104,18 @@ class ChatActivity : AppCompatActivity() {
         }
 
         cvProcess.setOnClickListener {
+            val autoId = storyRef.push().key!!
             val story = Story(
-                id = "implementAutoId",
+                id = autoId,
                 title = etTitle.text.toString(),
                 content = etContent.text.toString(),
                 createdAt = Date().toString(),
                 user = User(id = FirebaseAuth.getInstance().currentUser!!.uid, name = FirebaseAuth.getInstance().currentUser!!.email!!)
             )
-            // TODO: Insert to firebase
+            storyRef.child(autoId).setValue(story)
+            etTitle.setText("")
+            etContent.setText("")
+
         }
     }
 

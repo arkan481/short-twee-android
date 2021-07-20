@@ -11,10 +11,15 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import com.example.short_twee.models.Story
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class UpdateDialog : DialogFragment() {
 
     private lateinit var bundle: Bundle
+
+    private lateinit var etTitle: EditText
+    private lateinit var etContent: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         activity?.let { activity ->
@@ -38,15 +43,21 @@ class UpdateDialog : DialogFragment() {
 
         val updStory = bundle.getParcelable<Story>("story")
 
-        dialog?.findViewById<EditText>(R.id.et_update_title)!!.setText(updStory!!.title)
-        dialog?.findViewById<EditText>(R.id.et_update_content)!!.setText(updStory!!.content)
+        etTitle = dialog?.findViewById(R.id.et_update_title)!!
+        etTitle.setText(updStory!!.title)
+
+        etContent = dialog?.findViewById<EditText>(R.id.et_update_content)!!
+        etContent.setText(updStory!!.content)
 
         dialog?.findViewById<CardView>(R.id.cv_update_cancel)?.setOnClickListener { _ ->
             dialog?.cancel()
         }
 
         dialog?.findViewById<CardView>(R.id.cv_update_process)?.setOnClickListener { _ ->
-            //TODO: Update to firebase
+            updStory.title = etTitle.text.toString()
+            updStory.content = etContent.text.toString()
+            Firebase.database("https://short-twee-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                .getReference("stories").child(updStory.id!!).setValue(updStory)
             dialog?.cancel()
         }
     }

@@ -13,6 +13,8 @@ import com.example.short_twee.R
 import com.example.short_twee.UpdateDialog
 import com.example.short_twee.models.Story
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class ChatAdapters(private val stories: ArrayList<Story>? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -37,15 +39,15 @@ class ChatAdapters(private val stories: ArrayList<Story>? = null) :
                 val viewHolderSend = holder as ViewHolderSend
                 viewHolderSend.tvTitle.text = stories!![position].title
                 viewHolderSend.tvContent.text = stories!![position].content
-                viewHolderSend.tvDate.text = formatDate(stories!![position].createdAt)
-                viewHolderSend.tvAvatar.text = stories!![position].user.name.uppercase()[0].toString()
+                viewHolderSend.tvDate.text = formatDate(stories!![position].createdAt!!)
+                viewHolderSend.tvAvatar.text = stories!![position].user!!.name!!.uppercase()[0].toString()
             }
             1 -> {
                 val viewHolderSend = holder as ViewHolderReceive
                 viewHolderSend.tvTitle.text = stories!![position].title
                 viewHolderSend.tvContent.text = stories!![position].content
-                viewHolderSend.tvDate.text = formatDate(stories!![position].createdAt)
-                viewHolderSend.tvAvatar.text = stories!![position].user.name.uppercase()[0].toString()
+                viewHolderSend.tvDate.text = formatDate(stories!![position].createdAt!!)
+                viewHolderSend.tvAvatar.text = stories!![position].user!!.name!!.uppercase()[0].toString()
             }
         }
     }
@@ -59,7 +61,7 @@ class ChatAdapters(private val stories: ArrayList<Story>? = null) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (stories?.get(position)?.user?.id === FirebaseAuth.getInstance().currentUser!!.uid) {
+        return if (stories?.get(position)?.user?.id == FirebaseAuth.getInstance().currentUser!!.uid) {
             0
         } else {
             1
@@ -97,7 +99,8 @@ class ChatAdapters(private val stories: ArrayList<Story>? = null) :
 
             ibDelete.setOnClickListener {
                 val story = stories!![adapterPosition]
-                // TODO: Delete from firebase
+                Firebase.database("https://short-twee-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                    .getReference("stories").child(story.id!!).removeValue()
             }
         }
     }
