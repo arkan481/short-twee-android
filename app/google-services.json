@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "721851096982",
+    "firebase_url": "https://short-twee-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "short-twee",
+    "storage_bucket": "short-twee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721851096982:android:05d1882608b5cd187607b7",
+        "android_client_info": {
+          "package_name": "com.example.short_twee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721851096982-4ba7o6ff5gmn0rdlh7lf5q90thedh53a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPxRDCWSsFEWAIPKCnFhYfEJ17V3xgEAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721851096982-4ba7o6ff5gmn0rdlh7lf5q90thedh53a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
