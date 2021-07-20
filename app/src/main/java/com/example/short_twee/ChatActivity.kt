@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.short_twee.adapters.ChatAdapters
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -18,6 +20,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var tvEmail: TextView
     private lateinit var ibMenu: ImageButton
 
+    private lateinit var chatAdapters: ChatAdapters
+    private lateinit var rvChat: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -25,10 +30,18 @@ class ChatActivity : AppCompatActivity() {
         tvAvatar = findViewById(R.id.tv_head_avatar)
         tvEmail = findViewById(R.id.tv_head_email)
         ibMenu = findViewById(R.id.ib_head_menu)
+        rvChat = findViewById(R.id.rv_chat)
 
         setupHeader()
 
         bindEvents()
+
+        setupChatAdapter()
+    }
+
+    private fun setupChatAdapter() {
+        chatAdapters = ChatAdapters()
+        rvChat.adapter = chatAdapters
     }
 
     private fun bindEvents() {
