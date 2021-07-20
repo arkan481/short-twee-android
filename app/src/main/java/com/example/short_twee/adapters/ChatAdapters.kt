@@ -1,5 +1,7 @@
 package com.example.short_twee.adapters
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,11 +81,23 @@ class ChatAdapters(private val stories: ArrayList<Story>? = null) :
             ibDelete = itemView.findViewById(R.id.ib_chat_delete)
 
             itemView.setOnLongClickListener {
-                UpdateDialog().show(
+                val updateDialog = UpdateDialog()
+
+                val bundle = Bundle()
+                bundle.putParcelable("story", stories!![adapterPosition])
+
+                updateDialog.arguments = bundle
+
+                updateDialog.show(
                     (itemView.context as ChatActivity).supportFragmentManager,
                     "Update Story"
                 )
                 true
+            }
+
+            ibDelete.setOnClickListener {
+                val story = stories!![adapterPosition]
+                // TODO: Delete from firebase
             }
         }
     }

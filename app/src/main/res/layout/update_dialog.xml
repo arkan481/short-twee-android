@@ -32,6 +32,7 @@
             />
 
         <EditText
+            android:id="@+id/et_update_title"
             android:padding="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
             />
 
         <EditText
+            android:id="@+id/et_update_content"
             android:padding="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
